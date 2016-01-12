@@ -1,4 +1,4 @@
-package gl.domain.imp;
+package gl.domain.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
