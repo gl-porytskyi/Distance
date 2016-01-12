@@ -2,8 +2,8 @@ package gl.calculator;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 
+import gl.calculator.recursive.RecursiveDistanceCalculator;
 import gl.domain.Node;
 import gl.domain.impl.SimpleNode;
 import org.junit.Test;
@@ -19,44 +19,44 @@ import static org.junit.Assert.assertNull;
 @RunWith(Parameterized.class)
 public class DistanceCalculatorTest {
     @Parameterized.Parameter
-    private DistanceCalculator distanceCalculator;
+    public DistanceCalculator distanceCalculator;
 
     @Parameterized.Parameters
     public static Collection<DistanceCalculator> getDistanceCalculators() {
-        return Collections.emptySet();
+        return Arrays.asList(new RecursiveDistanceCalculator());
     }
 
     @Test
-    void testSame() {
+    public void testSame() {
         final Node first = new SimpleNode();
-        Integer d = distanceCalculator.getDistance(first, first);
+        Integer d = distanceCalculator.calcDistance(first, first);
         assertEquals((Object) 0, d);
     }
 
     @Test
-    void testOne() {
+    public void testOne() {
         Node first = new SimpleNode();
         Node second = new SimpleNode();
         first.getNeighbours().add(second);
         second.getNeighbours().add(first);
-        Integer d = distanceCalculator.getDistance(first, second);
+        Integer d = distanceCalculator.calcDistance(first, second);
         assertEquals((Object) 1, d);
     }
 
     @Test
-    void testTwo() {
+    public void testTwo() {
         Node first = new SimpleNode();
         Node second = new SimpleNode();
         Node third = new SimpleNode();
         first.getNeighbours().add(second);
         second.getNeighbours().addAll(Arrays.asList(first, third));
         third.getNeighbours().add(second);
-        Integer d = distanceCalculator.getDistance(first, third);
+        Integer d = distanceCalculator.calcDistance(first, third);
         assertEquals((Object) 2, d);
     }
 
     @Test
-    void testThree() {
+    public void testThree() {
         Node first = new SimpleNode();
         Node second = new SimpleNode();
         Node third = new SimpleNode();
@@ -65,12 +65,12 @@ public class DistanceCalculatorTest {
         second.getNeighbours().addAll(Arrays.asList(first, third));
         third.getNeighbours().addAll(Arrays.asList(second, fourth));
         fourth.getNeighbours().add(third);
-        Integer d = distanceCalculator.getDistance(first, fourth);
+        Integer d = distanceCalculator.calcDistance(first, fourth);
         assertEquals((Object) 3, d);
     }
 
     @Test
-    void testFour() {
+    public void testFour() {
         Node first = new SimpleNode();
         Node second = new SimpleNode();
         Node third = new SimpleNode();
@@ -81,12 +81,12 @@ public class DistanceCalculatorTest {
         third.getNeighbours().addAll(Arrays.asList(second, fourth));
         fourth.getNeighbours().addAll(Arrays.asList(third, fifth));
         fifth.getNeighbours().add(fourth);
-        Integer d = distanceCalculator.getDistance(first, fifth);
+        Integer d = distanceCalculator.calcDistance(first, fifth);
         assertNull(d);
     }
 
     @Test
-    void testMin() {
+    public void testMin() {
         Node first = new SimpleNode();
         Node second = new SimpleNode();
         Node third = new SimpleNode();
@@ -95,7 +95,7 @@ public class DistanceCalculatorTest {
         second.getNeighbours().addAll(Arrays.asList(first, third, fourth));
         third.getNeighbours().addAll(Arrays.asList(second, fourth));
         fourth.getNeighbours().addAll(Arrays.asList(third, second));
-        Integer d = distanceCalculator.getDistance(first, fourth);
+        Integer d = distanceCalculator.calcDistance(first, fourth);
         assertEquals((Object) 2, d);
     }
 }

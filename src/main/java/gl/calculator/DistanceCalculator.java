@@ -6,5 +6,7 @@ import gl.domain.Node;
  * @author Oleksandr Porytskyi
  */
 public interface DistanceCalculator {
-    Integer getDistance(Node start, Node end);
+    int DEFAULT_MAX_DEPTH = 3;
+
+    Integer calcDistance(Node start, Node end);
 }
