@@ -1,6 +1,9 @@
 package gl.calculator.recursive;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import gl.calculator.DistanceCalculator;
 import gl.domain.Node;
@@ -24,12 +27,16 @@ public class RecursiveDistanceCalculator implements DistanceCalculator {
                 return depth;
             }
         }
-        for (Node person : connections) {
-            if (depth < DEFAULT_MAX_DEPTH) {
-                Integer d = calcDistance(person, end, depth + 1);
-                if (d != null) {
-                    return d;   //  TODO mb not shortest
+        if (depth < DEFAULT_MAX_DEPTH) {
+            final List<Integer> distances = new ArrayList<>(connections.size());
+            for (Node person : connections) {
+                Integer distance = calcDistance(person, end, depth + 1);
+                if (distance != null) {
+                    distances.add(distance);
                 }
+            }
+            if (!distances.isEmpty()) {
+                return Collections.min(distances);
             }
         }
         return null;
