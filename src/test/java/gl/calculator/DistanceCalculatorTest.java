@@ -1,8 +1,11 @@
 package gl.calculator;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
+import gl.builder.GraphBuilder;
 import gl.calculator.recursive.RecursiveDistanceCalculator;
 import gl.domain.Node;
 import gl.domain.impl.SimpleNode;
@@ -22,7 +25,7 @@ public class DistanceCalculatorTest {
     public DistanceCalculator distanceCalculator;
 
     @Parameterized.Parameters
-    public static Collection<DistanceCalculator> getDistanceCalculators() {
+    public static Collection<? extends DistanceCalculator> getDistanceCalculators() {
         return Arrays.asList(new RecursiveDistanceCalculator());
     }
 
@@ -97,5 +100,26 @@ public class DistanceCalculatorTest {
         fourth.getNeighbours().addAll(Arrays.asList(third, second));
         Integer d = distanceCalculator.calcDistance(first, fourth);
         assertEquals((Object) 2, d);
+    }
+
+    @Test
+    public void testBuilder() {
+        final int size = 5;
+        List<Node> nodes = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            final SimpleNode node = new SimpleNode();
+            node.setName(String.valueOf((char) ('A' + i)));
+            nodes.add(node);
+        }
+        GraphBuilder.buildFromMatrix(nodes, new boolean[][]{
+                //  A   B       C       D   E
+                {false, true, false, false, true},
+                {false, false, true, false, false},
+                {false, false, false, true, false},
+                {false, false, false, false, true},
+                {false, false, false, false, false},
+        });
+        final Integer integer = distanceCalculator.calcDistance(nodes.get(0), nodes.get(3));
+        assertEquals((Object) 2, integer);
     }
 }
