@@ -1,8 +1,8 @@
 package gl.domain.impl;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import gl.domain.Node;
 
@@ -11,7 +11,7 @@ import gl.domain.Node;
  */
 public class SimpleNode implements Node {
     private String name;
-    private List<Node> neighbours = new ArrayList<>();
+    private Set<Node> neighbours = new HashSet<>();
 
     @Override
     public String getName() {
